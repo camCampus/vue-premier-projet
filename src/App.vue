@@ -1,21 +1,23 @@
 <script>
-import CitiesList from "@/components/CitiesList.vue";
+
 
 export default {
-  components: {
-    CitiesList
-  },
+
   data() {
+    return {}
   },
   methods: {
     onListClick() {
-      alert("connard")
+      alert("CAM-TOWN BEST CITY =)")
     }
   }
 }
 </script>
 <template>
-<CitiesList></CitiesList>
+ | <router-link to="/">Accueil</router-link> |
+  <router-link to="/Cities">Villes</router-link> |
+  <router-view></router-view>
+
 <button @click="onListClick" >CLICK</button>
 </template>
 
