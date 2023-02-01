@@ -1,8 +1,8 @@
 <template>
-  <div class="home">
-    <h1>HOME</h1>
+  <div class="mainNavCard">
+    <h1>Home</h1>
+    <cities-list />
   </div>
-  <cities-list />
 </template>
 
 <script>
@@ -15,3 +15,15 @@ export default {
   }
 }
 </script>
+
+<style>
+.mainNavCard {
+  color: #324850;
+  padding: 1vw;
+  margin: 1vw;
+  border-radius: 10px;
+  height: fit-content;
+  width: fit-content;
+  background: rgba(245,223,235,0.9);
+}
+</style>

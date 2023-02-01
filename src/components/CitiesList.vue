@@ -1,5 +1,5 @@
 <template>
-<h1>Météo - liste des villes</h1>
+<h1>Weather - List Of Cities</h1>
 </template>
 
 <script>

@@ -1,9 +1,11 @@
 <template>
-  <div>
-    <h1>CITIES</h1>
+  <div class="mainNavCard">
+    <h1>Cities</h1>
+    <CitiesList/>
   </div>
-  <CitiesList/>
+
 </template>
 <script setup>
 import CitiesList from "@/components/CitiesList.vue";
 </script>
+

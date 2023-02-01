@@ -15,7 +15,7 @@ export default {
   data() {
     return {
 
-      name: 'CAM-TOWN',
+      name: 'Cam-Town',
       weather: 'Always perfect weather',
       temperature: 26.55,
       updatedAt: new Date().toLocaleDateString()
@@ -29,13 +29,15 @@ export default {
   height: fit-content;
   width: 100%;
   max-width: 500px;
-  background-color: gray;
+  background: rgba(245,223,235,0.9);
   border-radius: 10px;
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  color: black;
+  color: #344a53;
+  font-size: calc(1rem + 1vw);
+  margin: 1vw;
 
 }
 #city ul {
@@ -43,10 +45,9 @@ export default {
   margin: auto;
   width: 100%;
   height: 100%;
-  padding: 5vw;
+  padding: 3vw;
 }
 span {
-  font-size: 20px;
   font-weight: bold;
 }
 </style>
