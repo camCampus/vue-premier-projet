@@ -1,9 +1,13 @@
 <script>
-
+import Draco from "@/components/Draco.vue";
 
 export default {
-
+  components: {Draco},
+  component: {
+    Draco
+  },
   data() {
+
     return {}
   },
   methods: {
@@ -23,6 +27,7 @@ export default {
     <div class="page-render">
       <router-view></router-view>
       <button @click="onListClick" >CLICK</button>
+      <draco></draco>
     </div>
 
   </div>
@@ -42,6 +47,7 @@ video {
   position: absolute;
   top: 0;
   left: 0;
+  height: 100%;
 }
 .nav {
   height: 8vh;
@@ -59,7 +65,7 @@ video {
   font-size: calc(1rem + 0.5vw);
 }
 .main-container {
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
 }
 .page-render {
