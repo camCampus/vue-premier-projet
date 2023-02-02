@@ -1,29 +1,19 @@
 <template>
   <div class="mainNavCard">
     <h1>Home</h1>
-    <cities-list />
   </div>
+  <Draco></Draco>
 </template>
-
 <script>
-import CitiesList from "@/components/CitiesList.vue";
+
+import Draco from "@/components/Draco.vue";
+
 
 export default {
-  components: {CitiesList},
+  components: {Draco},
+
   data() {
     return {}
   }
 }
 </script>
-
-<style>
-.mainNavCard {
-  color: #324850;
-  padding: 1vw;
-  margin: 1vw;
-  border-radius: 10px;
-  height: fit-content;
-  width: fit-content;
-  background: rgba(245,223,235,0.9);
-}
-</style>

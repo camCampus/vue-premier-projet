@@ -1,11 +1,8 @@
 <script>
-import Draco from "@/components/Draco.vue";
+
 
 export default {
-  components: {Draco},
-  component: {
-    Draco
-  },
+
   data() {
 
     return {}
@@ -17,38 +14,24 @@ export default {
   }
 }
 </script>
+
 <template>
   <div class="main-container">
     <div class="nav">
       <router-link to="/">Home</router-link>
       <router-link to="/Cities">List Of Cities</router-link>
-      <router-link to="/City">City</router-link>
     </div>
     <div class="page-render">
       <router-view></router-view>
       <button @click="onListClick" >CLICK</button>
-      <draco></draco>
     </div>
-
   </div>
-
-  <video playsinline autoplay loop muted>
-    <source src="src/assets/broken-bridge-pixel-moewalls.com.mp4" >
-  </video>
-
-
 
 
 </template>
 
 <style scoped>
-video {
-  z-index: -1;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-}
+
 .nav {
   height: 8vh;
   width: 100%;

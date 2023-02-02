@@ -10,15 +10,14 @@
 </template>
 
 <script>
+
+
 export default {
   name: "City",
+  props: ["name","weather","temperature","updatedAt" ],
   data() {
     return {
 
-      name: 'Cam-Town',
-      weather: 'Always perfect weather',
-      temperature: 26.55,
-      updatedAt: new Date().toLocaleDateString()
     }
   }
 }
