@@ -10,7 +10,9 @@ import Draco from "@/components/Draco.vue";
 
 
 export default {
-  components: {Draco},
+  components: {
+    Draco
+  },
 
   data() {
     return {}

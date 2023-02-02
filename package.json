@@ -8,6 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "eslint": "^8.33.0",
+    "eslint-plugin-vue": "^9.9.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },

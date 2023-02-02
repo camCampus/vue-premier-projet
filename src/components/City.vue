@@ -1,10 +1,10 @@
 <template>
 <div id="city">
   <ul>
-    <li><span>Name: </span>{{name}}</li>
-    <li><span>Weather: </span>{{weather}}</li>
-    <li><span>Temperature: </span>{{temperature}}C°</li>
-    <li><span>UpdatedAt: </span>{{updatedAt}}</li>
+    <li><span>Name : </span>{{name}}</li>
+    <li><span>Weather : </span>{{weather}}</li>
+    <li><span>Temperature : </span>{{temperature}}C°</li>
+    <li><span>UpdatedAt : </span>{{updatedAt}}</li>
   </ul>
 </div>
 </template>
@@ -14,21 +14,21 @@
 
 export default {
   name: "City",
-  props: ["name","weather","temperature","updatedAt" ],
-  data() {
-    return {
-
-    }
-  }
+  // props: ["name","weather","temperature","updatedAt" ],
+  props: {
+    name:String,
+    weather: String,
+    temperature: Number,
+    updatedAt:String,
+  },
 }
 </script>
 
 <style scoped>
-#city {
+div {
   height: fit-content;
   width: 100%;
-  max-width: 500px;
-  background: rgba(245,223,235,0.9);
+  max-width: 600px;
   border-radius: 10px;
   display: flex;
   flex-wrap: nowrap;
@@ -39,14 +39,16 @@ export default {
   margin: 1vw;
 
 }
-#city ul {
+ ul {
   list-style: none;
   margin: auto;
   width: 100%;
   height: 100%;
   padding: 3vw;
 }
+
 span {
   font-weight: bold;
+  text-decoration: underline;
 }
 </style>
