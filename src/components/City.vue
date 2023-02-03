@@ -1,11 +1,17 @@
 <template>
 <div id="city">
   <ul>
-    <li><span>Name : </span>{{name}}</li>
-    <li><span>Weather : </span>{{weather}}</li>
-    <li><span>Temperature : </span>{{temperature}}C°</li>
-    <li><span>UpdatedAt : </span>{{updatedAt}}</li>
-    <li><span>timeAgo : </span>{{timeAgo}}</li>
+    <li><img :src=url /></li>
+    <li><span style="padding-left: 7px"><font-awesome-icon icon="fa-solid fa-location-dot" class="icon"/></span>
+      {{name}}</li>
+    <li><span><font-awesome-icon icon="fa-solid fa-hat-wizard" class="icon"/></span> {{weather}}</li>
+    <li><span style="padding-left: 2px"><font-awesome-icon icon="fa-solid fa-circle-info" class="icon"/></span>
+      {{description}}</li>
+    <li><span style="padding-left: 11px"><font-awesome-icon icon="fa-solid fa-temperature-half" class="icon"/></span>
+      {{temperature}}C°</li>
+    <li><span style="padding-left: 7px"><font-awesome-icon icon="fa-regular fa-calendar" class="icon" /></span>
+      {{updatedAt}}</li>
+    <li><span></span>{{timeAgo}}</li>
   </ul>
 </div>
 </template>
@@ -19,6 +25,8 @@ export default {
   props: {
     name:String,
     weather: String,
+    description:String,
+    url:String,
     temperature: Number,
     updatedAt:String,
     timeAgo:String
@@ -48,8 +56,17 @@ div {
   height: 100%;
   padding: 3vw;
 }
-
+ li {
+   padding: 5px 0;
+ }
 span {
   font-weight: bold;
+}
+img {
+  background: rgb(52, 74, 83);
+  border-radius: 10px;
+}
+.icon {
+  font-size: 40px;
 }
 </style>
