@@ -1,13 +1,13 @@
 <template>
 <h1>Weather - List Of Cities</h1>
-  <h1>{{myDate}}</h1>
   <div class="wrapper">
     <city
         v-for="item in cities"
         :name="item.name"
         :weather="item.weather"
         :temperature="item.temperature"
-        :updated-at="item.updateAt">
+        :updated-at="item.updatedAt"
+    :time-ago="this.t">
     </city>
   </div>
 
@@ -16,20 +16,11 @@
           v-bind="item"></city>
   </div>
 
-<!--  <div  class="wrapper">-->
-<!--    <div v-for="item in cities">-->
-<!--      <city :name="item.name"/>-->
-<!--      <city :weather="item.weather"/>-->
-<!--      <city :temperature="item.temperature"/>-->
-<!--      <city :updated-at="item.updateAt"/>-->
-<!--    </div>-->
-
-<!--  </div>-->
 </template>
 
 <script>
 import City from "@/components/City.vue";
-
+import { format, render, cancel, register } from 'timeago.js';
 
 
 export default {
@@ -39,47 +30,50 @@ export default {
   name: "CitiesList",
   data() {
     return {
-      myDate:"",
+      t:null,
       cities: [
         {
           id:1,
           name:"Cam-Town",
           weather:"Sunshine",
           temperature:26.5,
-          updateAt:this.getNewDate()
+          updatedAt:this.getNewDate(),
+          timeAgo:""
         },
         {
           id:2,
           name: 'Paris',
           weather: 'Peu nuageux',
           temperature: 19.5,
-          updatedAt: this.getNewDate()
+          updatedAt: this.getNewDate(),
+          timeAgo:""
         },
         {
           id:3,
           name: 'Brest',
           weather: 'Vent fort',
           temperature: 19.5,
-          updatedAt: this.getNewDate()
+          updatedAt: this.getNewDate(),
+          timeAgo:""
         }
       ]
     }
   },
-  // mounted() {
-  //   this.myDate = this.getNewDate()
-  // },
-  created() {
-    this.myDate = this.getNewDate()
-  },
-
+mounted() {
+    setInterval(() => {
+      this.t = this.timeAgo()
+    },1000)
+},
   methods: {
-      getNewDate: () => {
+      getNewDate() {
         const today = new Date();
         const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
         const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         return date + ' ' + time
+      },
+      timeAgo() {
+        return format(new Date(this.myDate))
       }
-
     }
 }
 </script>

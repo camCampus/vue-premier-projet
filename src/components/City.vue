@@ -5,6 +5,7 @@
     <li><span>Weather : </span>{{weather}}</li>
     <li><span>Temperature : </span>{{temperature}}C°</li>
     <li><span>UpdatedAt : </span>{{updatedAt}}</li>
+    <li><span>timeAgo : </span>{{timeAgo}}</li>
   </ul>
 </div>
 </template>
@@ -20,6 +21,7 @@ export default {
     weather: String,
     temperature: Number,
     updatedAt:String,
+    timeAgo:String
   },
 }
 </script>
@@ -49,6 +51,5 @@ div {
 
 span {
   font-weight: bold;
-  text-decoration: underline;
 }
 </style>
