@@ -1,8 +1,10 @@
 <template>
-  <h1>Weather - List Of Cities</h1>
-
-  <span>{{ cityGeo }}</span>
+  <h1>List Of Cities</h1>
   <div class="wrapper">
+    <div class="reqStatus">
+      <p>{{loading}}</p>
+      <p class="red">{{error}}</p>
+    </div>
     <city
         v-for="item in cities"
         :name="item.name"
@@ -33,7 +35,7 @@
       return {
         myDate: new Date().getTime(),
         t: null,
-        loading: false,
+        loading: true,
         error: null,
         apiKey: "9c50ce1e0e5c3a730ddd10d27c04748a",
         cityGeo: '',
@@ -49,14 +51,9 @@
       }, 1000)
     },
     created() {
-      this.getCityWeather(this.cityGeo)
 
-      fetch("http://api.openweathermap.org/geo/1.0/direct?q=London&limit=1&appid=" + this.apiKey)
-          .then(res => res.json())
-          .then(log => fetch("http://api.openweathermap.org/data/2.5/forecast?lat=" + log[0].lat
-              + "&lon=" + log[0].lon + "&appid=" + this.apiKey))
-          .then(res => res.json())
-          .then(city => console.log(city.list[0].dt_txt))
+      this.getCityWeather("Annecy")
+
     },
     methods: {
       getNewDate() {
@@ -70,31 +67,41 @@
       },
 
       // Fonction pour récupérer latitude et longitude d'une ville
-      async getCitysGeo(name) {
+      async getCityGeo(name) {
         const res = await fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + name + "&limit=1&appid=" + this.apiKey)
         const json = await res.json()
         return [json[0].lat, json[0].lon]
       },
 
       //Fonction pour récupérer les données météo
-      async getCityWeather() {
-        const data = await this.getCitysGeo("london");
-        this.cityGeo = data
-        const res = await fetch("http://api.openweathermap.org/data/2.5/forecast?lat=" + data[0]
-            + "&lon=" + data[1] + "&units=metric" + "&appid=" + this.apiKey)
-        const json = await res.json()
-        const img = await "http://openweathermap.org/img/wn/" + json.list[0].weather[0].icon + "@2x.png"
-        this.img = img;
-        console.log("icon","http://openweathermap.org/img/wn/" + json.list[0].weather[0].icon + "@2x.png")
-        console.log(json)
-        this.cities.push({
-          name: json.city.name,
-          weather: json.list[0].weather[0].main,
-          description: json.list[0].weather[0].description,
-          temperature: json.list[0].main.temp,
-          updatedAt:  json.list[0].dt_txt ,
-        })
+      async getCityWeather(city) {
+
+        try {
+          this.loading = "Wait for request"
+
+            const data = await this.getCityGeo(city);
+            this.cityGeo = data
+            const res = await fetch("http://api.openweathermap.org/data/2.5/forecast?lat=" + data[0]
+                + "&lon=" + data[1] + "&units=metric" + "&appid=" + this.apiKey)
+            console.log("data",res.status)
+            const json = await res.json()
+            this.img = await "http://openweathermap.org/img/wn/" + json.list[0].weather[0].icon + "@2x.png";
+            this.cities.push({
+              name: json["city"].name,
+              weather: json.list[0].weather[0].main,
+              description: json.list[0].weather[0].description,
+              temperature: json.list[0].main["temp"],
+              updatedAt:  json.list[0]["dt_txt"] ,
+            })
+            this.loading = "Request done"
+
+        } catch (error) {
+          console.log("err", error)
+          this.loading = ""
+          this.error = "Oops we have an error"
+        }
       },
+
     }
   }
 </script>
@@ -105,7 +112,9 @@
     width: 100%;
     display: flex;
   }
-
+.red {
+  color: red;
+}
   @media screen and (max-width: 800px) {
     .wrapper {
       flex-direction: column;

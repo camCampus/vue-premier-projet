@@ -1,6 +1,5 @@
 <template>
   <div class="mainNavCard">
-    <h1>Cities</h1>
     <CitiesList/>
   </div>
 

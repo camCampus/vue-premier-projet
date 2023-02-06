@@ -2,16 +2,9 @@
 
 
 export default {
-
   data() {
-
     return {}
   },
-  methods: {
-    onListClick() {
-      alert("CAM-TOWN BEST CITY =)")
-    }
-  }
 }
 </script>
 
@@ -23,7 +16,6 @@ export default {
     </div>
     <div class="page-render">
       <router-view></router-view>
-      <button @click="onListClick" >CLICK</button>
     </div>
   </div>
 
