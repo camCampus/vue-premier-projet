@@ -1,7 +1,5 @@
 <template>
-  <div class="mainNavCard">
     <h1>Home</h1>
-  </div>
   <Draco></Draco>
 </template>
 <script>
@@ -19,3 +17,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  h1 {
+    color: #344a53;
+  }
+</style>

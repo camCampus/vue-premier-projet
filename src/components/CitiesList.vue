@@ -1,21 +1,21 @@
 <template>
-  <h1>List Of Cities</h1>
-  <div class="wrapper">
-    <div class="reqStatus">
-      <p>{{loading}}</p>
-      <p class="red">{{error}}</p>
-    </div>
+  <div class="reqStatus">
+    <p>{{loading}}</p>
+    <p class="red">{{error}}</p>
+    <p>{{location}}</p>
+  </div>
+
     <city
         v-for="item in cities"
         :name="item.name"
         :weather="item.weather"
         :description="item.description"
         :temperature="item.temperature"
-        :url="this.img"
+        :url="item.url"
         :updated-at="item.updatedAt"
-        :time-ago="this.t">
+        :time-ago="this.t"
+        class="wrapper">
     </city>
-  </div>
 
 </template>
 
@@ -26,6 +26,15 @@
 
 
   export default {
+    props: {
+      valForChild:String
+    },
+    watch: {
+      valForChild(newInput){
+        console.log(`new val ${newInput}`)
+        this.getCityWeather(newInput)
+      }
+    },
     components: {
       FontAwesomeIcon,
       City
@@ -40,8 +49,9 @@
         apiKey: "9c50ce1e0e5c3a730ddd10d27c04748a",
         cityGeo: '',
         searchCity: '',
-        img:'',
-
+        location:"",
+        autoGeo:false,
+        fap:this.paf(),
         cities: []
       }
     },
@@ -51,10 +61,9 @@
       }, 1000)
     },
     created() {
-
-      this.getCityWeather("Annecy")
-
+      this.getLocation()
     },
+
     methods: {
       getNewDate() {
         const today = new Date();
@@ -85,13 +94,14 @@
                 + "&lon=" + data[1] + "&units=metric" + "&appid=" + this.apiKey)
             console.log("data",res.status)
             const json = await res.json()
-            this.img = await "http://openweathermap.org/img/wn/" + json.list[0].weather[0].icon + "@2x.png";
+            const img = await "http://openweathermap.org/img/wn/" + json.list[0].weather[0].icon + "@2x.png";
             this.cities.push({
               name: json["city"].name,
               weather: json.list[0].weather[0].main,
               description: json.list[0].weather[0].description,
               temperature: json.list[0].main["temp"],
               updatedAt:  json.list[0]["dt_txt"] ,
+              url: img
             })
             this.loading = "Request done"
 
@@ -101,7 +111,29 @@
           this.error = "Oops we have an error"
         }
       },
+        getLocation(){
+          this.location = "Unable to retrieve your location please check your browser permission"
 
+          if(!navigator.geolocation) {
+          this.location = 'Geolocation is not supported by your browser';
+         } else {
+           navigator.geolocation.getCurrentPosition(async (pos) => {
+             let city = await this.getCity(pos.coords.latitude, pos.coords.longitude)
+             this.getCityWeather(city)
+           })
+         }
+      },
+      async getCity(lat, lon) {
+        const city = await
+            fetch("http://api.openweathermap.org/geo/1.0/reverse?lat="+ lat +
+                "&lon=" + lon + "&limit=5&appid=" + this.apiKey)
+        const resJson = await city.json()
+        this.location = "Location: " + resJson[0].name
+        return resJson[0].name
+      },
+      paf(input) {
+        console.log("gooooooo", input)
+      }
     }
   }
 </script>
@@ -109,15 +141,19 @@
 <style scoped>
   .wrapper {
     height: fit-content;
-    width: 100%;
+    width: fit-content;
+    padding: 0 1vh;
+    max-width: 500px;
+    max-height: 500px;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(0.5rem + 1vh);
+    background: rgba(245,223,235,0.9);
+    border-radius: 10px;
   }
 .red {
   color: red;
 }
-  @media screen and (max-width: 800px) {
-    .wrapper {
-      flex-direction: column;
-    }
-  }
 </style>

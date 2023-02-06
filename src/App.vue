@@ -1,6 +1,4 @@
 <script>
-
-
 export default {
   data() {
     return {}
@@ -18,12 +16,9 @@ export default {
       <router-view></router-view>
     </div>
   </div>
-
-
 </template>
 
 <style scoped>
-
 .nav {
   height: 8vh;
   width: 100%;

@@ -1,14 +1,5 @@
 @import './base.css';
 @import url('https://fonts.googleapis.com/css2?family=Short+Stack&family=Unbounded:wght@500&display=swap');
 
-.mainNavCard {
-    height: fit-content;
-    color: #324850;
-    padding: 1vw;
-    margin: 1vw;
-    border-radius: 10px;
-    width: fit-content;
-    background: rgba(245,223,235,0.9);
-}
 
 
