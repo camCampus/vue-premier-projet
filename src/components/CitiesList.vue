@@ -1,21 +1,21 @@
 <template>
   <div class="reqStatus">
-    <p>{{loading}}</p>
-    <p class="red">{{error}}</p>
-    <p>{{location}}</p>
+    <p>{{ loading }}</p>
+    <p class="red">{{ error }}</p>
+    <p>{{ location }}</p>
   </div>
 
-    <city
-        v-for="item in cities"
-        :name="item.name"
-        :weather="item.weather"
-        :description="item.description"
-        :temperature="item.temperature"
-        :url="item.url"
-        :updated-at="item.updatedAt"
-        :time-ago="this.t"
-        class="wrapper">
-    </city>
+  <city
+      v-for="item in cities"
+      :name="item.name"
+      :weather="item.weather"
+      :description="item.description"
+      :temperature="item.temperature"
+      :url="item.url"
+      :updated-at="item.updatedAt"
+      :time-ago="this.t"
+      class="wrapper">
+  </city>
 
 </template>
 
@@ -23,14 +23,17 @@
   import City from "@/components/City.vue";
   import {format} from 'timeago.js';
   import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+  import { mapState } from 'pinia'
+  import {useProductStore} from "@/stores/ProductStore";
 
 
   export default {
+
     props: {
-      valForChild:String
+      valForChild: String
     },
     watch: {
-      valForChild(newInput){
+      valForChild(newInput) {
         console.log(`new val ${newInput}`)
         this.getCityWeather(newInput)
       }
@@ -49,10 +52,13 @@
         apiKey: "9c50ce1e0e5c3a730ddd10d27c04748a",
         cityGeo: '',
         searchCity: '',
-        location:"",
-        autoGeo:false,
+        location: "",
+        autoGeo: false,
         cities: []
       }
+    },
+    computed: {
+      ...mapState(useProductStore, ['product'])
     },
     mounted() {
       setInterval(() => {
@@ -89,25 +95,32 @@
           this.loading = "Wait for request"
 
           //Récupération des coordonées lat et lon de la ville
-            const data = await this.getCityGeo(city);
-            this.cityGeo = data
+          const data = await this.getCityGeo(city);
+
+          //Stock pour chaque recherche les coordionées dans le store
+          useProductStore().product.push({
+            lat:data[0],
+            lon:data[1]
+          })
+          this.cityGeo = data
 
           //Recherche météo en fonction des coordonées de la villes
-            const res = await fetch("http://api.openweathermap.org/data/2.5/forecast?lat=" + data[0]
-                + "&lon=" + data[1] + "&units=metric" + "&appid=" + this.apiKey)
-            const json = await res.json()
-            const img = await "http://openweathermap.org/img/wn/" + json.list[0].weather[0].icon + "@2x.png";
+          const res = await fetch("http://api.openweathermap.org/data/2.5/forecast?lat=" + data[0]
+              + "&lon=" + data[1] + "&units=metric" + "&appid=" + this.apiKey)
+          const json = await res.json()
+          const img = await "http://openweathermap.org/img/wn/" + json.list[0].weather[0].icon + "@2x.png";
 
-            //Ajout d'un objet dans la tableau cities avec les datas météo de la ville recherchée
-            this.cities.push({
-              name: json["city"].name,
-              weather: json.list[0].weather[0].main,
-              description: json.list[0].weather[0].description,
-              temperature: json.list[0].main["temp"],
-              updatedAt:  json.list[0]["dt_txt"] ,
-              url: img
-            })
-            this.loading = "Request done"
+          //Ajout d'un objet dans la tableau cities avec les datas météo de la ville recherchée
+          this.cities.push({
+            name: json["city"].name,
+            weather: json.list[0].weather[0].main,
+            description: json.list[0].weather[0].description,
+            temperature: json.list[0].main["temp"],
+            updatedAt: json.list[0]["dt_txt"],
+            url: img
+          })
+
+          this.loading = "Request done"
 
         } catch (error) {
           console.log("err", error)
@@ -116,23 +129,23 @@
         }
       },
       //Fonction pour récuperer les coordonnées lat et lon du navigateur web
-        getLocation(){
-          this.location = "Unable to retrieve your location please check your browser permission"
+      getLocation() {
+        this.location = "Unable to retrieve your location please check your browser permission"
 
-          if(!navigator.geolocation) {
+        if (!navigator.geolocation) {
           this.location = 'Geolocation is not supported by your browser';
-         } else {
-            //Si l'utilisateur autorise le partage de sa position lance une recherche avec ses données
-           navigator.geolocation.getCurrentPosition(async (pos) => {
-             let city = await this.getCity(pos.coords.latitude, pos.coords.longitude)
-             this.getCityWeather(city)
-           })
-         }
+        } else {
+          //Si l'utilisateur autorise le partage de sa position lance une recherche avec ses données
+          navigator.geolocation.getCurrentPosition(async (pos) => {
+            let city = await this.getCity(pos.coords.latitude, pos.coords.longitude)
+            this.getCityWeather(city)
+          })
+        }
       },
       //Fonction pour récupérer le nom d'une ville en fonction de ses coordonnées lat et lon
       async getCity(lat, lon) {
         const city = await
-            fetch("http://api.openweathermap.org/geo/1.0/reverse?lat="+ lat +
+            fetch("http://api.openweathermap.org/geo/1.0/reverse?lat=" + lat +
                 "&lon=" + lon + "&limit=5&appid=" + this.apiKey)
         const resJson = await city.json()
         this.location = "Location: " + resJson[0].name
@@ -154,10 +167,11 @@
     align-items: center;
     justify-content: center;
     font-size: calc(0.5rem + 1vh);
-    background: rgba(245,223,235,0.9);
+    background: rgba(245, 223, 235, 0.9);
     border-radius: 10px;
   }
-.red {
-  color: red;
-}
+
+  .red {
+    color: red;
+  }
 </style>
