@@ -68,7 +68,7 @@
   }
 
   img {
-    background: #00FD7EFF;
+    background: #18be69;
     border-radius: 10px;
   }
 

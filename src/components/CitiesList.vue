@@ -51,7 +51,6 @@
         searchCity: '',
         location:"",
         autoGeo:false,
-        fap:this.paf(),
         cities: []
       }
     },
@@ -86,15 +85,20 @@
       async getCityWeather(city) {
 
         try {
+          //Message pour le status de la requête
           this.loading = "Wait for request"
 
+          //Récupération des coordonées lat et lon de la ville
             const data = await this.getCityGeo(city);
             this.cityGeo = data
+
+          //Recherche météo en fonction des coordonées de la villes
             const res = await fetch("http://api.openweathermap.org/data/2.5/forecast?lat=" + data[0]
                 + "&lon=" + data[1] + "&units=metric" + "&appid=" + this.apiKey)
-            console.log("data",res.status)
             const json = await res.json()
             const img = await "http://openweathermap.org/img/wn/" + json.list[0].weather[0].icon + "@2x.png";
+
+            //Ajout d'un objet dans la tableau cities avec les datas météo de la ville recherchée
             this.cities.push({
               name: json["city"].name,
               weather: json.list[0].weather[0].main,
@@ -111,18 +115,21 @@
           this.error = "Oops we have an error"
         }
       },
+      //Fonction pour récuperer les coordonnées lat et lon du navigateur web
         getLocation(){
           this.location = "Unable to retrieve your location please check your browser permission"
 
           if(!navigator.geolocation) {
           this.location = 'Geolocation is not supported by your browser';
          } else {
+            //Si l'utilisateur autorise le partage de sa position lance une recherche avec ses données
            navigator.geolocation.getCurrentPosition(async (pos) => {
              let city = await this.getCity(pos.coords.latitude, pos.coords.longitude)
              this.getCityWeather(city)
            })
          }
       },
+      //Fonction pour récupérer le nom d'une ville en fonction de ses coordonnées lat et lon
       async getCity(lat, lon) {
         const city = await
             fetch("http://api.openweathermap.org/geo/1.0/reverse?lat="+ lat +
@@ -131,9 +138,6 @@
         this.location = "Location: " + resJson[0].name
         return resJson[0].name
       },
-      paf(input) {
-        console.log("gooooooo", input)
-      }
     }
   }
 </script>

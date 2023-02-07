@@ -11,6 +11,7 @@ export default {
     <div class="nav">
       <router-link to="/">Home</router-link>
       <router-link to="/Cities">List Of Cities</router-link>
+      <router-link to="/Map">Map</router-link>
     </div>
     <div class="page-render">
       <router-view></router-view>
@@ -30,7 +31,7 @@ export default {
 .nav > * {
   margin: 1vh;
   text-decoration: none;
-  color: black;
+  color: #344a53;
   cursor: pointer;
   font-size: calc(1rem + 0.5vw);
 }
